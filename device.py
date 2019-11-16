@@ -231,6 +231,7 @@ class AndroidDevice(object):
         brand = await self.getprop("ro.product.brand")
         model = await self.getprop("ro.product.model")
         version = await self.getprop("ro.build.version.release")
+        density = await adb.shell(self._serial, "wm size")
 
         return {
             "serial": self._serial,
@@ -238,6 +239,7 @@ class AndroidDevice(object):
             "version": version,
             "model": model,
             "name": device_names.get(model, model),
+            "density": density.split(": ")[1].strip()
         }
 
     async def reset(self):
